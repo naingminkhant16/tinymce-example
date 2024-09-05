@@ -10,9 +10,9 @@ Route::get('/', function () {
 });
 
 Route::post('/upload', function () {
-//TODO : need to fix this url no correct
-    $fileName = request()->file('file')->getClientOriginalName();
-    $path = request()->file('file')->storeAs('uploads', $fileName, 'public');;
+//  TODO : need to fix this url no correct
+    $extension = request()->file('file')->getClientOriginalExtension();
+    $path = request()->file('file')->storeAs('uploads', uniqid() . '.' . $extension, 'public');;
     return response()->json(['location' => url('storage/' . $path)]);
 
     /*$imgpath = request()->file('file')->store('uploads', 'public');
@@ -29,7 +29,6 @@ Route::post('/blogs', function () {
     return redirect('/');
 });
 
-Route::get('/blogs/view', function () {
-    $blog = Blog::all()->first();
+Route::get('/blogs/{blog}', function (Blog $blog) {
     return Inertia::render('View', ['blog' => $blog]);
 });
